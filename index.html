@@ -22,9 +22,6 @@
       type="text/css"
     />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
-    <!-- css -->
-    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header>
@@ -96,14 +93,52 @@
     </section>
 
     <main class="bg-green-50">
-      <section class="mt-10 grid md:grid-cols-12">
-        <section class="text-center col-span-9 grid grid-rows-3">
-          <h2 class="font-bold text-2xl">Choose Your Trees</h2>
-          <div id="card-container"></div>
+      <section class="absolute left-4 bottom-10">
+        <h2 class="font-bold text-base p-7">Categories</h2>
+        <div id="catagory-loading" class=""></div>
+      </section>
 
-          <div id="catagory-container"></div>
-        </section>
-        <aside class="col-span-3"></aside>
+      <section class="absolute right-12 bottom-1.5">
+        <div id="cart-box" class="border-none bg-white rounded-xl">
+          <h2 class="font-bold text-sm px-8 py-3">Your Cart</h2>
+        </div>
+        <div class="flex justify-between bg-white">
+          <div class="">
+            <h2 class="text-sm font-bold p-2">Mango Tree</h2>
+            <p class="p-2">500tk</p>
+          </div>
+          <div>
+            <button><i class="fa-regular fa-circle-xmark p-4"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="">
+        <div class="text-center relative">
+          <h2 class="py-8 text-4xl font-bold">Choose Your Trees</h2>
+        </div>
+        <div class="flex justify-center">
+          <div
+            id="card-container"
+            class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4"
+          ></div>
+        </div>
+      </section>
+
+      <section>
+        <!-- Open the modal using ID.showModal() method -->
+        <!-- <button class="btn" onclick="my_modal_5.showModal()">open modal</button> -->
+        <dialog id="plant_modal" class="modal modal-bottom sm:modal-middle">
+          <div class="modal-box">
+            <div id="details-container" class=""></div>
+            <div class="modal-action">
+              <form method="dialog">
+                <!-- if there is a button in form, it will close the modal -->
+                <button class="btn">Close</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
       </section>
 
       <section>
