@@ -29,6 +29,36 @@ const displayPlantDetails = (plant) => {
     `;
   document.getElementById("plant_modal").showModal();
 };
+let cart = [];
+let total = 0;
+function addToCart(name, price) {
+  price = Number(price);
+  cart.push({ name, price });
+  total += price;
+
+  displayCart();
+  alert(`${plant.name} Added to Cart Successfully`);
+}
+function displayCart() {
+  const cartItems = document.getElementById("cart-item");
+  const cartTotal = document.getElementById("cart-total");
+  cartItems.innerHTML = "";
+  cart.forEach((plant) => {
+    const newCart = document.createElement("div");
+    newCart.innerHTML = `
+    <div class="flex justify-between">
+            <div class="">
+              <h1 class="font-bold text-sm">${plant.name}</h1>
+              <p>৳<span>${plant.price}</span></p>
+            </div>
+            <button onclick ="removeCart(${cartItems})" class="px-2 font-bold">❌</button>
+          </div>
+    `;
+
+    cartItems.append(newCart);
+  });
+  cartTotal.textContent = `৳${total}`;
+}
 
 const displayCards = (plants) => {
   const cardContainer = document.getElementById("card-container");
@@ -36,24 +66,24 @@ const displayCards = (plants) => {
   plants.forEach((plant) => {
     const cardDiv = document.createElement("div");
     cardDiv.innerHTML = `
-        <div class="card bg-base-100 w-72 shadow-sm">
-            <figure class="px-7 pt-7">
+        <div class="card bg-base-100 w-64 h-full shadow-sm">
+            <figure class="px-5 py-5">
               <img
                 src="${plant.image}"
                 alt= "${plant.name}"
-                class="rounded-xl"
+                class="rounded-lg h-40 w-full"
               />
             </figure>
-            <div class="card-body">
+            <div class="card-body flex flex-col">
               <h2 onclick="loadPlantDetail(${plant.id})" class="card-title font-bold text-sm">${plant.name}</h2>
               <p class="text-sm">${plant.description}
               </p>
-              <div class="flex justify-between space-x-23">
+              <div class="flex justify-between space-x-14">
                 <button class="btn btn-active rounded-full text-green-600 bg-green-100">${plant.category}</button>
                 <p class="font-bold text-xl">${plant.price}</p>
               </div>
               <div class="card-actions">
-                <button class="btn btn-block bg-[#15803D] text-white rounded-3xl">ADD TO CART</button>
+                <button onclick="addToCart('${plant.name}','${plant.price}')" class="btn btn-block bg-[#15803D] text-white rounded-3xl cart-btns">ADD TO CART</button>
               </div>
             </div>
           </div>
