@@ -3,6 +3,60 @@ const loadingCards = () => {
     .then((res) => res.json())
     .then((res) => displayCards(res.plants));
 };
+const loadingCategories = () =>{
+  fetch("https://openapi.programming-hero.com/api/categories")
+  .then((res) => res.json())
+  .then(categories=> displayCategories(categories.categories))
+}
+const displayCategories = (categories) =>{
+    console.log(categories)
+    const categoryContainer = document.getElementById("catagory-list")
+    categoryContainer.innerHTML = ""
+    categories.forEach(category=>{
+      const categoryButton = document.createElement("div")
+      categoryButton.innerHTML=`
+          <button onclick="loadPlants(${category.id})" class="btn btn-block rounded-xl">${category.category_name}</button>
+      `
+      categoryContainer.append(categoryButton)
+    })
+}
+const loadPlants = (id)=>{
+  const url = `https://openapi.programming-hero.com/api/category/${id}`;
+  fetch(url)
+  .then((res) => res.json())
+  .then(res=>displayCategoryPlant(res.plants))
+ }
+ const displayCategoryPlant = (plants)=>{
+    const newCardShow = document.getElementById("card-container")
+    newCardShow.innerHTML = ""
+    plants.forEach((plant) =>{
+      const categoryCard = document.createElement("div")
+      categoryCard.innerHTML = `
+      <div class="card bg-base-100 w-64 h-full shadow-sm">
+            <figure class="px-5 py-5">
+              <img
+                src="${plant.image}"
+                alt= "${plant.name}"
+                class="rounded-lg h-40 w-full"
+              />
+            </figure>
+            <div class="card-body flex flex-col">
+              <h2 onclick="loadPlantDetail(${plant.id})" class="card-title font-bold text-sm">${plant.name}</h2>
+              <p class="text-sm">${plant.description}
+              </p>
+              <div class="flex justify-between space-x-14">
+                <button class="btn btn-active rounded-full text-green-600 bg-green-100">${plant.category}</button>
+                <p class="font-bold text-xl">${plant.price}</p>
+              </div>
+              <div class="card-actions">
+                <button onclick="addToCart('${plant.name}','${plant.price}')" class="btn btn-block bg-[#15803D] text-white rounded-3xl cart-btns">ADD TO CART</button>
+              </div>
+            </div>
+          </div>
+      `
+      newCardShow.append(categoryCard)
+    })
+ }
 
 const loadPlantDetail = async (id) => {
   const url = `https://openapi.programming-hero.com/api/plant/${id}`;
@@ -33,17 +87,16 @@ let cart = [];
 let total = 0;
 function addToCart(name, price) {
   price = Number(price);
+  alert(`${name} is added to cart`)
   cart.push({ name, price });
   total += price;
-
   displayCart();
-  alert(`${plant.name} Added to Cart Successfully`);
 }
 function displayCart() {
   const cartItems = document.getElementById("cart-item");
   const cartTotal = document.getElementById("cart-total");
   cartItems.innerHTML = "";
-  cart.forEach((plant) => {
+  cart.forEach((plant , index) => {
     const newCart = document.createElement("div");
     newCart.innerHTML = `
     <div class="flex justify-between">
@@ -51,7 +104,7 @@ function displayCart() {
               <h1 class="font-bold text-sm">${plant.name}</h1>
               <p>৳<span>${plant.price}</span></p>
             </div>
-            <button onclick ="removeCart(${cartItems})" class="px-2 font-bold">❌</button>
+            <button onclick ="removeCart(${index})" class="px-2 font-bold">❌</button>
           </div>
     `;
 
@@ -59,7 +112,11 @@ function displayCart() {
   });
   cartTotal.textContent = `৳${total}`;
 }
-
+function removeCart(index){
+  total -= cart[index].price
+  cart.splice(index,1)
+  displayCart() 
+}
 const displayCards = (plants) => {
   const cardContainer = document.getElementById("card-container");
   cardContainer.innerHTML = "";
@@ -92,3 +149,4 @@ const displayCards = (plants) => {
   });
 };
 loadingCards();
+loadingCategories();
